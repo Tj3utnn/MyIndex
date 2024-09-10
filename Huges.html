@@ -1,0 +1,492 @@
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Huge Pets - Collection</title>
+                <link rel="stylesheet" href="../styles.css">
+            </head>
+            <body>
+                <div class="container">
+                    <aside class="sidebar">
+                        <div class="menu">
+                            <button class="home-button" data-link="../">Home</button>
+                            <button data-link="../Titanics/Titanics.html">Titanics</button>
+                            <button data-link="../Huges/Huges.html">Huges</button>
+                            <button data-link="../Exclusives/Exclusives.html">Exclusives</button>
+                            <button data-link="../Stat/Stat.html">Stat pets</button>
+                            <button data-link="../Hoverboards/Hoverboards.html">Hoverboards</button>
+                        </div>
+                        <button class="joinme-button" data-link="https://www.roblox.com/users/1691333230/profile">
+                            <img src="../Face.png" alt="Profile">Join Me
+                        </button>
+                    </aside>
+                    <main class="main-content">
+                        <div class="top-bar">
+                            <input type="text" class="search-bar" placeholder="Search" id="searchBar">
+                            <div class="sort-options">
+                                <button id="sortName">Sort by Name</button>
+                                <button id="sortVariation">Sort by Variation (N, G, RB)</button>
+                            </div>
+                            <div class="percentage-info">
+                                <p>Normal: <span id="normalPercentage">100%</span></p>
+                                <p>Gold: <span id="goldPercentage">100%</span></p>
+                                <p>Rainbow: <span id="rainbowPercentage">100%</span></p>
+                                <p>Shiny: <span id="shinyPercentage">100%</span></p>
+                                <p>Total: <span id="totalPercentage">100%</span></p>
+                            </div>
+                        </div>
+                        <div class="item-grid" id="itemGrid">
+                            <!-- Index items will go here -->
+                        </div>
+                        <p>Last updated: 7/27/2024</p>
+                        <p id="bottom">©2024 KDBgames</p>
+                    </main>
+                </div>
+                <script>
+                    // Define the total virtual counts for each variation
+                    const virtualCounts = {
+                        normal: 383,
+                        gold: 274,
+                        rainbow: 363,
+                        shiny: 306
+                    };
+
+                    // Variation: 1 = N, 2 = G, 3 = RB, 4 = SN, 5 = SG, 6 = SRB
+                    const items = [
+                        { name: 'Bubble Dog', img: 'noicon.png', variations: [1] },
+                        { name: 'Crowned Corgi', img: 'noicon.png', variations: [1] },
+                        { name: 'Crowned Pegasus', img: 'noicon.png', variations: [1] },
+                        { name: 'Hippo', img: 'noicon.png', variations: [3, 4] },
+                        { name: 'Mr Crabs', img: 'noicon.png', variations: [3] },
+            { name: 'Old Wizard Owl', img: 'noicon.png', variations: [1, 2, 3, 4] },
+            { name: 'Old Wizard Corgi', img: 'noicon.png', variations: [1, 2, 3, 4] },
+            { name: 'Huge Owl', img: 'noicon.png', variations: [1] },
+            { name: 'Patrick', img: 'noicon.png', variations: [4] },
+            { name: 'Pegasus', img: 'noicon.png', variations: [1, 2, 3] },
+            { name: 'Stunt Unicorn', img: 'noicon.png', variations: [1] },
+            { name: 'Tropical Flamingo', img: 'noicon.png', variations: [1, 2, 3, 4] },
+            { name: 'Tropical Parrot', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Tropical Toucan', img: 'noicon.png', variations: [1, 2, 3, 4] },
+            { name: 'Cyborg Capybara', img: 'noicon.png', variations: [3] },
+            { name: 'Umbrella Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Tiedye Corgi', img: 'noicon.png', variations: [4] },
+            { name: 'Tiedye Axolotl', img: 'noicon.png', variations: [4] },
+            { name: 'Treasure Turtle', img: 'noicon.png', variations: [2, 3] },
+            { name: 'Sand Castle Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Samurai Dragon', img: 'noicon.png', variations: [3] },
+            { name: 'Sailor Shark', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Shark', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Reindeer Dog', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Reindeer Axolotl', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Red Fluffy', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Prickly Panda', img: 'noicon.png', variations: [3] },
+            { name: 'Santa Monkey', img: 'noicon.png', variations: [3] },
+            { name: 'Santa Dragon', img: 'noicon.png', variations: [4] },
+            { name: 'Present Chest Mimic', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Chest Mimic', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Pinata Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Pixel Wolf', img: 'noicon.png', variations: [3] },
+            { name: 'Pixel Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Evolved Pixel Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Pixel Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Party Penguin', img: 'noicon.png', variations: [3] },
+            { name: 'Party Monkey', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Party Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Party Axolotl', img: 'noicon.png', variations: [3] },
+            { name: 'Party Dragon', img: 'noicon.png', variations: [4] },
+            { name: 'Otter', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Neon Twilight Wolf', img: 'noicon.png', variations: [2] },
+            { name: 'Neon Twilight Dragon', img: 'noicon.png', variations: [3] },
+            { name: 'Monkey', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Jelly Monkey', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Emoji Monkey', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Lucki Dominus', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Lucki Agony', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Lucki', img: 'noicon.png', variations: [3] },
+            { name: 'Chroma Lucki', img: 'noicon.png', variations: [4] },
+            { name: 'Chroma Lucky Block', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Grinch Cat', img: 'noicon.png', variations: [2, 4] },
+            { name: 'Mosaic Griffin', img: 'noicon.png', variations: [3] },
+            { name: 'Grim Reaper', img: 'noicon.png', variations: [3] },
+            { name: 'Neon Griffin', img: 'noicon.png', variations: [4] },
+            { name: 'Capybara', img: 'noicon.png', variations: [2, 3] },
+            { name: 'Apple Capybara', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Cow', img: 'noicon.png', variations: [2, 3] },
+            { name: 'Comet Cyclops', img: 'noicon.png', variations: [4] },
+            { name: 'Comet Agony', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Clover Dragon', img: 'noicon.png', variations: [3] },
+            { name: 'Clover Fairy', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Clover Unicorn', img: 'noicon.png', variations: [4] },
+            { name: 'Butterfly', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Blurred Dominus', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Tiki Dominus', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Storm Dominus', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Inferno Dominus', img: 'noicon.png', variations: [4] },
+            { name: 'Basketball Retriever', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Axolotl', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Sage Axolotl', img: 'noicon.png', variations: [3] },
+
+            { name: 'Jelly Axolotl', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Hologram Axolotl', img: 'noicon.png', variations: [4] },
+            { name: 'Ninja Axolotl', img: 'noicon.png', variations: [4] },
+            { name: 'Black Hole Axolotl', img: 'noicon.png', variations: [3] },
+            { name: 'Green Balloon Axolotl', img: 'noicon.png', variations: [4] },
+            { name: 'Abyssal Axolotl', img: 'noicon.png', variations: [3] },
+            { name: 'Atomic Axolotl', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Anime Unicorn', img: 'noicon.png', variations: [2, 3] },
+            { name: 'Anime Agony', img: 'noicon.png', variations: [3] },
+            { name: 'Angelus', img: 'noicon.png', variations: [2, 3, 4] },
+            { name: 'Sun Angelus', img: 'noicon.png', variations: [3] },
+            { name: 'Peppermint Angelus', img: 'noicon.png', variations: [4] },
+            { name: 'Angel Dog', img: 'noicon.png', variations: [2] },
+            { name: 'Angel Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Wild Fire Agony', img: 'noicon.png', variations: [3, 4] },
+            { name: 'White Tiger', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Vampire Bat', img: 'noicon.png', variations: [4] },
+            { name: 'Valkyrie Wolf', img: 'noicon.png', variations: [4] },
+            { name: 'Valentine Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Unicorn', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Unicorn Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Turtle', img: 'noicon.png', variations: [3] },
+            { name: 'Techno Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Super Tiger', img: 'noicon.png', variations: [3] },
+            { name: 'Strawberry Corgi', img: 'noicon.png', variations: [3] },
+            { name: 'Stargazing Wolf', img: 'noicon.png', variations: [3] },
+            { name: 'Sombrero Chihuahua', img: 'noicon.png', variations: [4] },
+            { name: 'Snowman', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Skeleton', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Scary Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Scary Corgi', img: 'noicon.png', variations: [4] },
+            { name: 'Safety Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Safari Dog', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Redstone Cat', img: 'noicon.png', variations: [4] },      
+            { name: 'Pumkin Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Pufferfish', img: 'noicon.png', variations: [3] },
+            { name: 'Evolved Pterodactyl', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Popcat', img: 'noicon.png', variations: [4] },
+            { name: 'Police Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Pixie Fox', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Pirate Parrot', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Pink Marshmallow Chick', img: 'noicon.png', variations: [3] },
+            { name: 'Peacock', img: 'noicon.png', variations: [3] },
+            { name: 'Evolved Peacock', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Pastel Elephant', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Pastel Sock Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Orange Balloon Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Nightmare Kraken', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Nightfall Wolf', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Nightfall Pegasus', img: 'noicon.png', variations: [3] },
+            { name: 'Neon Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Mosaic Corgi', img: 'noicon.png', variations: [4] },
+            { name: 'Masked Owl', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Marshmallow Agony', img: 'noicon.png', variations: [4] },
+            { name: 'Mantis Shrimp', img: 'noicon.png', variations: [3] },
+            { name: 'M-10 Prototype', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Lunar Moth', img: 'noicon.png', variations: [4] },
+            { name: 'Love Lamb', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Leprechaun Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Kraken', img: 'noicon.png', variations: [3] },
+            { name: 'Kitsune Fox', img: 'noicon.png', variations: [4] },
+            { name: 'King Cobra', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Evolved King Cobra', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Kawaii Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Jelly Piggy', img: 'noicon.png', variations: [3] },
+            { name: 'Jelly Corgi', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Inferno Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Husky', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Hoverboard Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Hot Dog', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Hippomelon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Hi-Tech Tiger', img: 'noicon.png', variations: [3] },
+            { name: 'Hell Rock', img: 'noicon.png', variations: [4] },
+            { name: 'Heart Balloon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Green Balloon Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Gamer Shiba', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Fox', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Forest Wyvern', img: 'noicon.png', variations: [3] },
+            { name: 'Floppa', img: 'noicon.png', variations: [4] },
+            { name: 'Firefighter Dalmatian', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Firefly', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Fire Horse', img: 'noicon.png', variations: [3] },
+            { name: 'Festive Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Fairy', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Exquisite Parrot', img: 'noicon.png', variations: [3] },
+            { name: 'Evolved Cupcake', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Evolved Hell Rock', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Evolved Hacked Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Enchanted Deer', img: 'noicon.png', variations: [3] },
+            { name: 'Empyrean Agony', img: 'noicon.png', variations: [4] },
+            { name: 'Emoji Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Elf Dog', img: 'noicon.png', variations: [3] },
+            { name: 'Elf Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Elegant Eagle', img: 'noicon.png', variations: [3] },
+            { name: 'Electric Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Easter Yeti', img: 'noicon.png', variations: [3] },
+            { name: 'Easter Bunny', img: 'noicon.png', variations: [3] },
+            { name: 'Ducky', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Dove', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Doodle Cat', img: 'noicon.png', variations: [4] },
+            { name: 'Doodle Fairy', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Dog', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Diamond Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Devil Agony', img: 'noicon.png', variations: [4] },
+            { name: 'Cyborg Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Cyborg Dragon', img: 'noicon.png', variations: [3] },
+            { name: 'Cupid Corgi', img: 'noicon.png', variations: [4] },
+            { name: 'Crystal Dog', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Crocodile', img: 'noicon.png', variations: [3] },
+            { name: 'Cosmic Agony', img: 'noicon.png', variations: [3] },
+            { name: 'Corgi', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Cool Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Cheerful Yeti', img: 'noicon.png', variations: [4] },
+            { name: 'Chameleon', img: 'noicon.png', variations: [3] },
+            { name: 'Celestial Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Bread Shiba', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Blue Balloon Cat', img: 'noicon.png', variations: [3] },
+            { name: 'Blazing Bat', img: 'noicon.png', variations: [3] },
+            { name: 'Black Hole Kitsune', img: 'noicon.png', variations: [3] },
+            { name: 'Bejewed Lion', img: 'noicon.png', variations: [3] },
+            { name: 'Bee', img: 'noicon.png', variations: [3] },
+            { name: 'Bearserker', img: 'noicon.png', variations: [4] },
+            { name: 'Bear', img: 'noicon.png', variations: [4] },
+            { name: 'Balloon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Atlantean Orca', img: 'noicon.png', variations: [4] },
+            { name: 'Arcade Cat', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Arcade Dragon', img: 'noicon.png', variations: [3] },
+            { name: 'Ancient Dragon', img: 'noicon.png', variations: [1, 2, 3, 4] },
+            { name: 'Amethyst Dragon', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Clown Cat', img: 'noicon.png', variations: [1] },
+            { name: 'Raptor', img: 'noicon.png', variations: [3] },
+            { name: 'Egg Dino', img: 'noicon.png', variations: [4] },
+            { name: 'Hydra Dino', img: 'noicon.png', variations: [4] },
+            { name: 'Triceratops', img: 'noicon.png', variations: [3, 4] },
+            { name: 'Strawberry Cow', img: 'noicon.png', variations: [4] },
+            { name: 'Three Headed Dragon', img: 'noicon.png', variations: [1 ,2 ,3, 4] },
+            { name: 'Luchador Coyote', img: 'noicon.png', variations: [1 ,3] },
+                        { name: 'Luchador Eagle', img: 'noicon.png', variations: [1 ,3, 4] },
+                        { name: 'Kawaii Tiger', img: 'noicon.png', variations: [1, 2 ,3, 4] },
+                        { name: 'Cupcake Unicorn', img: 'noicon.png', variations: [1 ,3 , 4] },
+                        { name: 'Helicopter Cat', img: 'noicon.png', variations: [2 ,3 , 4] },
+                        { name: 'Ice Cream Cone', img: 'noicon.png', variations: [1, 2 ,3] },
+                         { name: 'Skateboard Bulldog', img: 'noicon.png', variations: [1, 3, 4] },
+                        // name: 'Chroma Snail', img: 'noicon.png', variations: [1, 3], colors: {
+                       // 1: ['purple', 'orange', 'red', 'yellow', 'green', 'blue'],  // Normal
+            {
+                            name: 'Chroma Tiger', img: 'noicon.png', variations: [3, 4], colors: {                       
+                                3: ['purple', 'orange', 'red', 'yellow', 'green', 'blue'],   // Rainbow
+                                4: ['purple', 'orange', 'red', 'yellow', 'green', 'blue']   // Shiny
+                            }
+                        },
+                        {
+                            name: 'Chroma Butterfly', img: 'noicon.png', variations: [1, 3], colors: {
+                                1: ['blue'],  // Normal
+                                3: ['purple', 'orange', 'red', 'yellow', 'green', 'blue'],   // Rainbow
+                                
+                            }
+                        },
+                        {
+                            name: 'Chroma Unicorn', img: 'noicon.png', variations: [3], colors: {
+                                3: ['purple', 'orange', 'red', 'yellow', 'green'],   // Rainbow
+
+                            }
+                        },
+                        {
+                            name: 'Chroma Swan', img: 'noicon.png', variations: [1, 3], colors: {
+                                1: ['white', 'purple', 'orange', 'red', 'yellow', 'blue'],  // Normal
+                                3: ['white','orange','yellow', 'green', 'blue'],   // Rainbow
+
+                            }
+                        },
+                        {
+                            name: 'Chroma Ink Blob', img: 'noicon.png', variations: [1, 3, 4], colors: {
+                                1: ['purple', 'orange', 'yellow', 'green', 'blue'],  // Normal
+                                3: ['purple', 'orange', 'red', 'yellow', 'green'],   // Rainbow
+                                4: ['orange', 'red', 'yellow', 'green', 'blue'],   // Shiny
+
+                            }
+                        },
+                        {
+                            name: 'Chroma Snail', img: 'noicon.png', variations: [1, 3], colors: {
+                                1: ['purple', 'red', 'yellow', 'green', 'blue'],  // Normal
+                                3: ['purple', 'orange', 'red', 'yellow', 'green', 'blue'],   // Rainbow
+                               
+
+                            }
+                        },
+                        { name: 'Chroma Phoenix', img: 'noicon.png', variations: [3, 4] },
+                        { name: 'Sad Hamster', img: 'noicon.png', variations: [1 , 3, 4] },
+                        { name: 'Sad Dodge', img: 'noicon.png', variations: [1 , 3, 4] },
+                        { name: 'Graffiti Raccoon', img: 'noicon.png', variations: [1 , 2, 3] },
+                                                                                    
+         ];
+
+        const itemGrid = document.getElementById('itemGrid');
+        const searchBar = document.getElementById('searchBar');
+        const sortNameButton = document.getElementById('sortName');
+        const sortVariationButton = document.getElementById('sortVariation');
+
+        const normalPercentage = document.getElementById('normalPercentage');
+        const goldPercentage = document.getElementById('goldPercentage');
+        const rainbowPercentage = document.getElementById('rainbowPercentage');
+        const shinyPercentage = document.getElementById('shinyPercentage');
+        const totalPercentage = document.getElementById('totalPercentage');
+
+        let isNameAscending = true;
+        let isVariationAscending = true;
+
+                    function populateItems(itemsToDisplay) {
+                        itemGrid.innerHTML = '';
+                        itemsToDisplay.forEach(item => {
+                            item.variations.forEach(variation => {
+                                const colorVariations = item.colors && item.colors[variation] ? item.colors[variation] : [null];
+                                colorVariations.forEach(color => {
+                                    const itemElement = document.createElement('div');
+                                    itemElement.classList.add('item');
+                                    let itemId;
+
+                                    switch (variation) {
+                                        case 1: itemId = 'Normal'; break;
+                                        case 2: itemId = 'Gold'; break;
+                                        case 3: itemId = 'Rainbow'; break;
+                                        case 4: itemId = 'Shiny'; break;
+                                        case 5: itemId = 'ShinyGold'; break;
+                                        case 6: itemId = 'ShinyRainbow'; break;
+                                    }
+                                    itemElement.id = itemId;
+
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = item.img === 'noicon.png' ? `${item.name}.webp` : item.img;
+                                    itemElement.appendChild(imgElement);
+
+                                    if (variation >= 4) {
+                                        const shinyEffectDiv = document.createElement('div');
+                                        shinyEffectDiv.id = 'ShinyEffect';
+                                        itemElement.appendChild(shinyEffectDiv);
+                                    }
+
+                                    if (color) {
+                                        itemElement.classList.add(color);
+                                    }
+
+                                    const nameElement = document.createElement('p');
+                                    let prefix = '';
+                                    switch (variation) {
+                                        case 1: prefix = ''; break;
+                                        case 2: prefix = 'gold '; break;
+                                        case 3: prefix = 'rainbow '; break;
+                                        case 4: prefix = 'shiny '; break;
+                                        case 5: prefix = 'shiny gold '; break;
+                                        case 6: prefix = 'shiny rainbow '; break;
+                                    }
+
+                                    // Include the color in the name
+                                    const colorPrefix = color ? `${color} ` : '';
+                                    nameElement.innerText = `${colorPrefix}${prefix}${item.name}`;
+                                    itemElement.appendChild(nameElement);
+
+                                    itemGrid.appendChild(itemElement);
+                                });
+                            });
+                        });
+                        updatePercentages();
+                    }
+
+        function updatePercentages() {
+            const variationCounts = { normal: 0, gold: 0, rainbow: 0, shiny: 0 };
+
+            items.forEach(item => {
+                item.variations.forEach(variation => {
+                    if (variation === 1) variationCounts.normal++;
+                    if (variation === 2) variationCounts.gold++;
+                    if (variation === 3) variationCounts.rainbow++;
+                    if (variation >= 4) variationCounts.shiny++;
+                });
+            });
+
+            // Calculate and display the complement percentages based on virtual counts
+            const normalPercent = (100 - (variationCounts.normal / virtualCounts.normal * 100)).toFixed(2);
+            const goldPercent = (100 - (variationCounts.gold / virtualCounts.gold * 100)).toFixed(2);
+            const rainbowPercent = (100 - (variationCounts.rainbow / virtualCounts.rainbow * 100)).toFixed(2);
+            const shinyPercent = (100 - (variationCounts.shiny / virtualCounts.shiny * 100)).toFixed(2);
+
+            normalPercentage.innerText = `${normalPercent}%`;
+            goldPercentage.innerText = `${goldPercent}%`;
+            rainbowPercentage.innerText = `${rainbowPercent}%`;
+            shinyPercentage.innerText = `${shinyPercent}%`;
+
+            // Calculate and display the total combined percentage
+            const totalPercent = (parseFloat(normalPercent) + parseFloat(goldPercent) + parseFloat(rainbowPercent) + parseFloat(shinyPercent)) / 4;
+            totalPercentage.innerText = `${totalPercent.toFixed(2)}%`;
+        }
+
+        function sortItemsByName() {
+            items.sort((a, b) => {
+                return isNameAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            });
+            isNameAscending = !isNameAscending;
+            filterAndPopulateItems();
+        }
+
+        function sortItemsByVariation() {
+            let sortedItems = [];
+            const query = searchBar.value.toLowerCase();
+
+            items.forEach(item => {
+                if (item.name.toLowerCase().includes(query)) {
+                    item.variations.forEach(variation => {
+                        sortedItems.push({ ...item, variations: [variation] });
+                    });
+                }
+            });
+
+            sortedItems.sort((a, b) => {
+                return isVariationAscending ? a.variations[0] - b.variations[0] : b.variations[0] - a.variations[0];
+            });
+
+            isVariationAscending = !isVariationAscending;
+            populateItems(sortedItems);
+        }
+
+        function searchItems() {
+            filterAndPopulateItems();
+        }
+
+        function filterAndPopulateItems() {
+            const query = searchBar.value.toLowerCase();
+            const filteredItems = items.filter(item => item.name.toLowerCase().includes(query));
+            populateItems(filteredItems);
+        }
+
+        sortNameButton.addEventListener('click', sortItemsByName);
+        sortVariationButton.addEventListener('click', sortItemsByVariation);
+        searchBar.addEventListener('input', searchItems);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterAndPopulateItems();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.menu button, .joinme-button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const link = button.getAttribute('data-link');
+                    if (link) {
+                        const linkOrigin = new URL(link, window.location.href).origin;
+                        const currentOrigin = window.location.origin;
+
+                        if (linkOrigin === currentOrigin) {
+                            window.location.href = link;
+                        } else {
+                            window.open(link, '_blank');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

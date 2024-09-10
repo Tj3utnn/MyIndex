@@ -1,0 +1,242 @@
+ <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Huge Pets - Collection</title>
+                <link rel="stylesheet" href="../styles.css">
+            </head>
+            <body>
+                <div class="container">
+                    <aside class="sidebar">
+                        <div class="menu">
+                            <button class="home-button" data-link="../">Home</button>
+                            <button data-link="../Titanics/Titanics.html">Titanics</button>
+                            <button data-link="../Huges/Huges.html">Huges</button>
+                            <button data-link="../Exclusives/Exclusives.html">Exclusives</button>
+                            <button data-link="../Stat/Stat.html">Stat pets</button>
+                            <button data-link="../Hoverboards/Hoverboards.html">Hoverboards</button>
+                        </div>
+                        <button class="joinme-button" data-link="https://www.roblox.com/users/1691333230/profile">
+                            <img src="../Face.png" alt="Profile">Join Me
+                        </button>
+                    </aside>
+                    <main class="main-content">
+                        <div class="top-bar">
+                            <input type="text" class="search-bar" placeholder="Search" id="searchBar">
+                            <div class="sort-options">
+                                <button id="sortName">Sort by Name</button>
+                                <button id="sortVariation">Sort by Variation (N, G, RB)</button>
+                            </div>
+                            <div class="percentage-info">
+                                <p>Normal: <span id="normalPercentage">100%</span></p>
+                                <p>Gold: <span id="goldPercentage">100%</span></p>
+                                <p>Rainbow: <span id="rainbowPercentage">100%</span></p>
+                                <p>Shiny: <span id="shinyPercentage">100%</span></p>
+                                <p>Total: <span id="totalPercentage">100%</span></p>
+                            </div>
+                        </div>
+                        <div class="item-grid" id="itemGrid">
+                            <!-- Index items will go here -->
+                        </div>
+                        <p>Last updated: 7/27/2024</p>
+                        <p id="bottom">©2024 KDBgames</p>
+                    </main>
+                </div>
+                <script>
+                    // Define the total virtual counts for each variation
+                    const virtualCounts = {
+                        normal: 50,
+                        gold: 50,
+                        rainbow: 50,
+                        shiny: 50
+                    };
+
+                    // Variation: 1 = N, 2 = G, 3 = RB, 4 = SN, 5 = SG, 6 = SRB
+                    const items = [
+                        { name: 'Super Cat', img: 'noicon.png', variations: [2] },
+                        { name: 'Floppa', img: 'noicon.png', variations: [2] },
+                        { name: 'Sleipnir', img: 'noicon.png', variations: [2] },
+                        { name: 'Sock Corgi', img: 'noicon.png', variations: [3] },
+                        { name: 'Dominus Astra', img: 'noicon.png', variations: [3] },
+                        { name: 'Prickly Panda', img: 'noicon.png', variations: [4] },
+                        { name: 'Neon Twilight Wolf', img: 'noicon.png', variations: [4] },
+                        { name: 'Capybara', img: 'noicon.png', variations: [4] },
+                        { name: 'Super Capybara', img: 'noicon.png', variations: [4] },
+                        { name: 'Neon Twilight Cat', img: 'noicon.png', variations: [4] },
+                        { name: 'Neon Twilight Dragon', img: 'noicon.png', variations: [4] },
+                        { name: 'Lightning Bat', img: 'noicon.png', variations: [4] },
+                        { name: 'Neon Twilight Tiger', img: 'noicon.png', variations: [4] },
+                        { name: 'Inferno Cat', img: 'noicon.png', variations: [4] },
+                        { name: 'Cyborg Capybara', img: 'noicon.png', variations: [4] },
+                        { name: 'Tropical Flamingo', img: 'noicon.png', variations: [1, 2, 3, 4] },
+                        { name: 'Tropical Parrot', img: 'noicon.png', variations: [1, 2, 3, 4] },
+                        { name: 'Tropical Toucan', img: 'noicon.png', variations: [1, 2, 3, 4] },
+                        { name: 'Old Wizard Corgi', img: 'noicon.png', variations: [2, 3, 4] },
+                        { name: 'Old Wizard Dragon', img: 'noicon.png', variations: [3, 4] },
+                        { name: 'Old Wizard Owl', img: 'noicon.png', variations: [2, 3, 4] },
+         ];
+                    
+
+        const itemGrid = document.getElementById('itemGrid');
+        const searchBar = document.getElementById('searchBar');
+        const sortNameButton = document.getElementById('sortName');
+        const sortVariationButton = document.getElementById('sortVariation');
+
+        const normalPercentage = document.getElementById('normalPercentage');
+        const goldPercentage = document.getElementById('goldPercentage');
+        const rainbowPercentage = document.getElementById('rainbowPercentage');
+        const shinyPercentage = document.getElementById('shinyPercentage');
+        const totalPercentage = document.getElementById('totalPercentage');
+
+        let isNameAscending = true;
+        let isVariationAscending = true;
+
+        function populateItems(itemsToDisplay) {
+            itemGrid.innerHTML = '';
+            itemsToDisplay.forEach(item => {
+                item.variations.forEach(variation => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    if (variation == 1) {
+                        itemElement.id = 'Normal';
+                    } else if (variation == 2) {
+                        itemElement.id = 'Gold';
+                    } else if (variation == 3) {
+                        itemElement.id = 'Rainbow';
+                    } else if (variation == 4) {
+                        itemElement.id = 'Shiny';
+                    } else if (variation == 5) {
+                        itemElement.id = 'ShinyGold';
+                    } else if (variation == 6) {
+                        itemElement.id = 'ShinyRainbow';
+                    }
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = item.img === 'noicon.png' ? `${item.name}.webp` : item.img;
+                    itemElement.appendChild(imgElement);
+
+                    if (variation == 4 || variation == 5 || variation == 6) {
+                        const shinyEffectDiv = document.createElement('div');
+                        shinyEffectDiv.id = 'ShinyEffect';
+                        itemElement.appendChild(shinyEffectDiv);
+                    }
+
+                    const nameElement = document.createElement('p');
+                    if (variation == 1) {
+                        nameElement.innerText = `\n${item.name}`;
+                    } else if (variation == 2) {
+                        nameElement.innerText = `gold\n${item.name}`;
+                    } else if (variation == 3) {
+                        nameElement.innerText = `rainbow\n${item.name}`;
+                    } else if (variation == 4) {
+                        nameElement.innerText = `shiny \n${item.name}`;
+                    } else if (variation == 5) {
+                        nameElement.innerText = `shiny gold\n${item.name}`;
+                    } else if (variation == 6) {
+                        nameElement.innerText = `shiny rainbow\n${item.name}`;
+                    }
+
+                    itemElement.appendChild(nameElement);
+                    itemGrid.appendChild(itemElement);
+                });
+            });
+            updatePercentages(); // Update percentages based on total virtual counts
+        }
+
+        function updatePercentages() {
+            const variationCounts = { normal: 0, gold: 0, rainbow: 0, shiny: 0 };
+
+            items.forEach(item => {
+                item.variations.forEach(variation => {
+                    if (variation === 1) variationCounts.normal++;
+                    if (variation === 2) variationCounts.gold++;
+                    if (variation === 3) variationCounts.rainbow++;
+                    if (variation >= 4) variationCounts.shiny++;
+                });
+            });
+
+            // Calculate and display the complement percentages based on virtual counts
+            const normalPercent = (100 - (variationCounts.normal / virtualCounts.normal * 100)).toFixed(2);
+            const goldPercent = (100 - (variationCounts.gold / virtualCounts.gold * 100)).toFixed(2);
+            const rainbowPercent = (100 - (variationCounts.rainbow / virtualCounts.rainbow * 100)).toFixed(2);
+            const shinyPercent = (100 - (variationCounts.shiny / virtualCounts.shiny * 100)).toFixed(2);
+
+            normalPercentage.innerText = `${normalPercent}%`;
+            goldPercentage.innerText = `${goldPercent}%`;
+            rainbowPercentage.innerText = `${rainbowPercent}%`;
+            shinyPercentage.innerText = `${shinyPercent}%`;
+
+            // Calculate and display the total combined percentage
+            const totalPercent = (parseFloat(normalPercent) + parseFloat(goldPercent) + parseFloat(rainbowPercent) + parseFloat(shinyPercent)) / 4;
+            totalPercentage.innerText = `${totalPercent.toFixed(2)}%`;
+        }
+
+        function sortItemsByName() {
+            items.sort((a, b) => {
+                return isNameAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            });
+            isNameAscending = !isNameAscending;
+            filterAndPopulateItems();
+        }
+
+        function sortItemsByVariation() {
+            let sortedItems = [];
+            const query = searchBar.value.toLowerCase();
+
+            items.forEach(item => {
+                if (item.name.toLowerCase().includes(query)) {
+                    item.variations.forEach(variation => {
+                        sortedItems.push({ ...item, variations: [variation] });
+                    });
+                }
+            });
+
+            sortedItems.sort((a, b) => {
+                return isVariationAscending ? a.variations[0] - b.variations[0] : b.variations[0] - a.variations[0];
+            });
+
+            isVariationAscending = !isVariationAscending;
+            populateItems(sortedItems);
+        }
+
+        function searchItems() {
+            filterAndPopulateItems();
+        }
+
+        function filterAndPopulateItems() {
+            const query = searchBar.value.toLowerCase();
+            const filteredItems = items.filter(item => item.name.toLowerCase().includes(query));
+            populateItems(filteredItems);
+        }
+
+        sortNameButton.addEventListener('click', sortItemsByName);
+        sortVariationButton.addEventListener('click', sortItemsByVariation);
+        searchBar.addEventListener('input', searchItems);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterAndPopulateItems();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.menu button, .joinme-button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const link = button.getAttribute('data-link');
+                    if (link) {
+                        const linkOrigin = new URL(link, window.location.href).origin;
+                        const currentOrigin = window.location.origin;
+
+                        if (linkOrigin === currentOrigin) {
+                            window.location.href = link;
+                        } else {
+                            window.open(link, '_blank');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

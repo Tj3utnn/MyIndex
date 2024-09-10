@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huge Pets - Collection</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="menu">
+                <button class="home-button" data-link="../">Home</button>
+                <button data-link="../Titanics/Titanics.html">Titanics</button>
+                <button data-link="../Huges/Huges.html">Huges</button>
+                <button data-link="../Exclusives/Exclusives.html">Exclusives</button>
+                <button data-link="../Stat/Stat.html">Stat pets</button>
+                <button data-link="../Hoverboards/Hoverboards.html">Hoverboards</button>
+            </div>
+            <button class="joinme-button" data-link="https://www.roblox.com/users/1691333230/profile">
+                <img src="../Face.png" alt="Profile">Join Me
+            </button>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <input type="text" class="search-bar" placeholder="Search" id="searchBar">
+                <div class="sort-options">
+                    <button id="sortName">Sort by Name</button>
+                    <button id="sortVariation">Sort by Variation (N, G, RB)</button>
+                </div>
+                <div class="percentage-info">
+                    <p>Shiny: <span id="shinyPercentage">100%</span></p>
+                    <p>Shiny Gold: <span id="shinyGoldPercentage">100%</span></p>
+                    <p>Shiny Rainbow: <span id="shinyRainbowPercentage">100%</span></p>
+                    <p>Total: <span id="totalPercentage">100%</span></p>
+                </div>
+            </div>
+            <div class="item-grid" id="itemGrid">
+                <!-- Index items will go here -->
+            </div>
+            <p>Last updated: 7/27/2024</p>
+            <p id="bottom">©2024 KDBgames</p>
+        </main>
+    </div>
+    <script>
+        // Define the total virtual counts for each variation
+        const virtualCounts = {
+            shiny: 1232,
+            shinyGold: 974,
+            shinyRainbow: 1133
+        };
+
+        // Variation: 1 = N, 2 = G, 3 = RB, 4 = SN, 5 = SG, 6 = SRB
+        const items = [
+            { name: 'Snowflake Pegasus', img: 'noicon.png', variations: [4] },
+            { name: 'Santa Paws', img: 'noicon.png', variations: [6] },
+            { name: 'Silver Dragon', img: 'noicon.png', variations: [6] },
+            { name: 'Hydra Dino', img: 'noicon.png', variations: [4] },
+            { name: 'Masked Owl', img: 'noicon.png', variations: [4, 6] },
+            { name: 'Kawaii Tiger', img: 'noicon.png', variations: [4] },
+            {
+                name: 'Chroma Phoenix', img: 'noicon.png', variations: [4], colors: {
+                    4: ['white', 'green', 'purple', 'orange', 'yellow', 'blue'],   // Shiny
+                }
+            },
+                ];
+
+                const itemGrid = document.getElementById('itemGrid');
+                const searchBar = document.getElementById('searchBar');
+                const sortNameButton = document.getElementById('sortName');
+                const sortVariationButton = document.getElementById('sortVariation');
+
+                const shinyPercentage = document.getElementById('shinyPercentage');
+                const shinyGoldPercentage = document.getElementById('shinyGoldPercentage');
+                const shinyRainbowPercentage = document.getElementById('shinyRainbowPercentage');
+                const totalPercentage = document.getElementById('totalPercentage');
+
+                let isNameAscending = true;
+                let isVariationAscending = true;
+
+                function populateItems(itemsToDisplay) {
+                    itemGrid.innerHTML = '';
+                    itemsToDisplay.forEach(item => {
+                        item.variations.forEach(variation => {
+                            const colorVariations = item.colors && item.colors[variation] ? item.colors[variation] : [null];
+                            colorVariations.forEach(color => {
+                                const itemElement = document.createElement('div');
+                                itemElement.classList.add('item');
+                                let itemId;
+
+                                switch (variation) {
+                                    case 1: itemId = 'Normal'; break;
+                                    case 2: itemId = 'Gold'; break;
+                                    case 3: itemId = 'Rainbow'; break;
+                                    case 4: itemId = 'Shiny'; break;
+                                    case 5: itemId = 'ShinyGold'; break;
+                                    case 6: itemId = 'ShinyRainbow'; break;
+                                }
+                                itemElement.id = itemId;
+
+                                const imgElement = document.createElement('img');
+                                imgElement.src = item.img === 'noicon.png' ? `${item.name}.webp` : item.img;
+                                itemElement.appendChild(imgElement);
+
+                                if (variation >= 4) {
+                                    const shinyEffectDiv = document.createElement('div');
+                                    shinyEffectDiv.id = 'ShinyEffect';
+                                    itemElement.appendChild(shinyEffectDiv);
+                                }
+
+                                if (color) {
+                                    itemElement.classList.add(color);
+                                }
+
+                                const nameElement = document.createElement('p');
+                                let prefix = '';
+                                switch (variation) {
+                                    case 1: prefix = ''; break;
+                                    case 2: prefix = 'gold '; break;
+                                    case 3: prefix = 'rainbow '; break;
+                                    case 4: prefix = 'shiny '; break;
+                                    case 5: prefix = 'shiny gold '; break;
+                                    case 6: prefix = 'shiny rainbow '; break;
+                                }
+
+                                // Include the color in the name if available
+                                const colorPrefix = color ? `${color} ` : '';
+                                nameElement.innerText = `${colorPrefix}${prefix}${item.name}`;
+                                itemElement.appendChild(nameElement);
+
+                                itemGrid.appendChild(itemElement);
+                            });
+                        });
+                    });
+                    updatePercentages(); // Update percentages based on total virtual counts
+                }
+
+                function updatePercentages() {
+                    const variationCounts = { shiny: 0, shinyGold: 0, shinyRainbow: 0 };
+
+                    items.forEach(item => {
+                        item.variations.forEach(variation => {
+                            if (variation === 4) variationCounts.shiny++;
+                            if (variation === 5) variationCounts.shinyGold++;
+                            if (variation === 6) variationCounts.shinyRainbow++;
+                        });
+                    });
+
+                    // Calculate and display the complement percentages based on virtual counts
+                    const shinyPercent = (100 - (variationCounts.shiny / virtualCounts.shiny * 100)).toFixed(2);
+                    const shinyGoldPercent = (100 - (variationCounts.shinyGold / virtualCounts.shinyGold * 100)).toFixed(2);
+                    const shinyRainbowPercent = (100 - (variationCounts.shinyRainbow / virtualCounts.shinyRainbow * 100)).toFixed(2);
+
+                    shinyPercentage.innerText = `${shinyPercent}%`;
+                    shinyGoldPercentage.innerText = `${shinyGoldPercent}%`;
+                    shinyRainbowPercentage.innerText = `${shinyRainbowPercent}%`;
+
+                    // Calculate and display the total combined percentage
+                    const totalPercent = (parseFloat(shinyPercent) + parseFloat(shinyGoldPercent) + parseFloat(shinyRainbowPercent)) / 3;
+                    totalPercentage.innerText = `${totalPercent.toFixed(2)}%`;
+                }
+
+                function sortItemsByName() {
+                    items.sort((a, b) => {
+                        return isNameAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+                    });
+                    isNameAscending = !isNameAscending;
+                    filterAndPopulateItems();
+                }
+
+                function sortItemsByVariation() {
+                    let sortedItems = [];
+                    const query = searchBar.value.toLowerCase();
+
+                    items.forEach(item => {
+                        if (item.name.toLowerCase().includes(query)) {
+                            item.variations.forEach(variation => {
+                                sortedItems.push({ ...item, variations: [variation] });
+                            });
+                        }
+                    });
+
+                    sortedItems.sort((a, b) => {
+                        return isVariationAscending ? a.variations[0] - b.variations[0] : b.variations[0] - a.variations[0];
+                    });
+
+                    isVariationAscending = !isVariationAscending;
+                    populateItems(sortedItems);
+                }
+
+                function searchItems() {
+                    filterAndPopulateItems();
+                }
+
+                function filterAndPopulateItems() {
+                    const query = searchBar.value.toLowerCase();
+                    const filteredItems = items.filter(item => item.name.toLowerCase().includes(query));
+                    populateItems(filteredItems);
+                }
+
+                sortNameButton.addEventListener('click', sortItemsByName);
+                sortVariationButton.addEventListener('click', sortItemsByVariation);
+                searchBar.addEventListener('input', searchItems);
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    filterAndPopulateItems();
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const buttons = document.querySelectorAll('.menu button, .joinme-button');
+
+                    buttons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            const link = button.getAttribute('data-link');
+                            if (link) {
+                                const linkOrigin = new URL(link, window.location.href).origin;
+                                const currentOrigin = window.location.origin;
+
+                                if (linkOrigin === currentOrigin) {
+                                    window.location.href = link;
+                                } else {
+                                    window.open(link, '_blank');
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
