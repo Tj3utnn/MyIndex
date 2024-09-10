@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<meta property="og:site_name" content="Made by Tj3utnn">
+<meta property="og:title" content="My index site!">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://0c27012d-4308-4661-b483-d2b22db71881-00-3lkl37y9fll23.janeway.replit.dev/#">
+<meta property="og:description" content="I'm on a mission to index every single pet in the game.
+
+    📁 My Index with icons I still need
+    🎁 Small gifts for big indexes
+    📬 Contact me on discord: @Tj3utnn
+    ❤️ Every help is welcome!">
+<meta property="og:image" content="test.png"">
+<meta name="twitter:card" content="summary_large_image">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: #fff;
+            width: 250px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu button,
+        .joinme-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #444;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .menu button:hover,
+        .joinme-button:hover {
+            background-color: #ff6f61;
+            transform: scale(1.05);
+        }
+
+        .home-button {
+            background-color: #007bff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
+
+        .joinme-button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .main-content {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .main-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .main-text {
+            flex: 1;
+        }
+
+        .main-image {
+            max-width: 400px;
+            margin-left: 30px;
+        }
+
+        #bottom {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="menu">
+                <button class="home-button" data-link="../">Home</button>
+                <button data-link="../Titanics/Titanics.html">Titanics</button>
+                <button data-link="../Huges/Huges.html">Huges</button>
+                <button data-link="../Exclusives/Exclusives.html">Exclusives</button>
+                <button data-link="../Stat/Stat.html">Stat pets</button>
+                <button data-link="../Hoverboards/Hoverboards.html">Hoverboards</button>
+            </div>
+            <button class="joinme-button" data-link="https://www.roblox.com/users/377788908/profile">
+                <img src="Face.png" alt="Profile">Join Me
+            </button>
+        </aside>
+        <main class="main-content">
+            <div class="main-text">
+                <h1>Welcome to @Tj3utnn's Collection</h1>
+                <p>Here you can find every pet or item I still need to index!</p>
+                <p>You can always join me if you follow me on Roblox (link at 'join me' button)</p>
+                <p>We can work with colat, or you can ask previous people I can be trusted to give without colat.</p>
+            
+                
+                <p id='bottom'>©2024 KDBgames</p>
+            </div>
+            <img class="main-image" src="Index Machine.webp" alt="Main Image">
+        </main>
+    </div>
+    <script>
+        document.querySelectorAll('button[data-link]').forEach(button => {
+            button.addEventListener('click', () => {
+                const link = button.getAttribute('data-link');
+                window.location.href = link;
+            });
+        });
+    </script>
+</body>
+</html>
